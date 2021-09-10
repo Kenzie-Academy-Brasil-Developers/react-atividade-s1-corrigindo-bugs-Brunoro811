@@ -11,7 +11,6 @@ function App() {
   const handleShowDeck = () => {
     setShowDeck(true);
   };
-
   useEffect(() => {
     fetch("https://deckofcardsapi.com/api/deck/new/")
       .then((res) => res.json())
@@ -21,7 +20,6 @@ function App() {
       })
       .catch((error) => console.error(error));
   }, []);
-
   useEffect(() => {
     if (deck) {
       fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=52`)
@@ -30,7 +28,6 @@ function App() {
         .catch((error) => console.error(error));
     }
   }, [deck, deckId]);
-
   return (
     <div className="main-container">
       <h1 className="main-title">Debugue para ver o baralho</h1>
