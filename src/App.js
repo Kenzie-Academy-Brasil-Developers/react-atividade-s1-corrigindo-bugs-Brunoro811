@@ -28,6 +28,7 @@ function App() {
         .catch((error) => console.error(error));
     }
   }, [deck, deckId]);
+  useEffect(() => () => {}, []);
   return (
     <div className="main-container">
       <h1 className="main-title">Debugue para ver o baralho</h1>
