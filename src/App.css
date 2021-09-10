@@ -1,3 +1,8 @@
+div,
+main,
+header {
+  box-sizing: border-box;
+}
 body {
   background-color: #308835;
 }

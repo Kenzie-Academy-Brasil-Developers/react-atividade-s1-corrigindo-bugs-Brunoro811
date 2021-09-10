@@ -1,43 +1,44 @@
 import CardsList from "./components/cards-list";
-import useEffect from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
-export const App = () => {
+function App() {
   const [showDeck, setShowDeck] = useState(false);
   const [cardsList, setCardsList] = useState([]);
   const [deck, setDeck] = useState("");
-
-  const handleDeckRequest = () => {
-    fetch("https://deckofcardsapi.com/api/deck/new/")
-      .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
-
-  const handleCardsRequest = (deckId) => {
-    fetch("https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=52")
-      .then((res) => res.json())
-      .then((res) => setCardsList([...res.cards]));
-  };
+  const [deckId, setDeckId] = useState("");
 
   const handleShowDeck = () => {
-    setShowDeck(false);
+    setShowDeck(true);
   };
 
   useEffect(() => {
-    handleDeckRequest();
-  }, [deck]);
+    fetch("https://deckofcardsapi.com/api/deck/new/")
+      .then((res) => res.json())
+      .then((res) => {
+        setDeckId(res.deck_id);
+        setDeck(res);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   useEffect(() => {
-    if (deck) handleCardsRequest(deck);
-  }, []);
+    if (deck) {
+      fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=52`)
+        .then((res) => res.json())
+        .then((res) => setCardsList([...res.cards]))
+        .catch((error) => console.error(error));
+    }
+  }, [deck, deckId]);
 
   return (
     <div className="main-container">
       <h1 className="main-title">Debugue para ver o baralho</h1>
-      <button onChange={handleShowDeck} className="new-deck-button">
+      <button onClick={handleShowDeck} className="new-deck-button">
         Novo baralho
       </button>
-      {ShowDeck & <CardsList cardsList={cardsList} />}
+      {showDeck && <CardsList cardsList={cardsList} />}
     </div>
   );
-};
+}
+export default App;
